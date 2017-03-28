@@ -26,7 +26,7 @@ body {
   font-style: normal;
   font-stretch: normal;
   line-height: 1.79;
-  user-select: none;
+  /*user-select: none;*/
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
