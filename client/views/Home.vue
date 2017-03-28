@@ -47,14 +47,14 @@
         <header class="card-header">选项</header>
         <div class="card-content inner">
           <fieldset class="form-group">
-              <label for="mode">加密模式：</label>
-              <select id="mode" class="form-control" v-model="selectedmode">
-                <option>ECB (电子密码本)</option>
-                <option>CBC (分组连接)</option>
-                <option>CFB (密码反馈)</option>
-                <option>OFB (输出反馈)</option>
-              </select>
-            </fieldset>
+            <label for="mode">加密模式：</label>
+            <select id="mode" class="form-control" v-model="selectedmode">
+              <option>ECB (电子密码本)</option>
+              <option>CBC (分组连接)</option>
+              <option>CFB (密码反馈)</option>
+              <option>OFB (输出反馈)</option>
+            </select>
+          </fieldset>
           <fieldset class="form-group">
               <label for="keylen">密钥长度：</label>
               <select id="keylen" class="form-control" v-model="selectedkeylen">
@@ -62,8 +62,31 @@
                 <option>192</option>
                 <option>256</option>
               </select>
+          </fieldset>
+          <transition name="fade">
+            <fieldset class="form-group" v-show="selectedmode=='CFB (密码反馈)'">
+              <label for="segment">单次加密长度：</label>
+              <select id="segment" class="form-control" v-model="segment">
+                <option v-for="num in divisor">{{num}}</option>
+              </select>
             </fieldset>
+          </transition>
         </div>
+        <transition name="fade">
+          <div class="card-content inner" v-show="selectedmode!='ECB (电子密码本)'">
+            <p>按字节输入初始化向量（不用加0x）：</p>
+            <div class="hex--container">
+              <div class="hex--hex" v-for="(_, index) in iVector">
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="ff"
+                  @keyup="iVectorKeyup(index, $event.target.value, $event)">
+              </div>
+            </div>
+            <p>按数组预览初始化向量：{{iVector}}</p>
+          </div>
+        </transition>
       </div>
       <div class="cell -6of12 go">
         <div class="btn btn-default btn-ghost" @click="clickGo">encrypt ↓</div>
@@ -76,7 +99,7 @@
         <header class="card-header">密文</header>
         <div class="card-content inner">
           <fieldset class="form-group">
-            <label for="username">密文：</label>
+            <label for="username">字符串密文：</label>
             <input
             class="form-control"
             v-model="encryptedHex"
@@ -89,19 +112,25 @@
 </template>
 
 <style lang='scss'>
+  .fade-enter-active, .fade-leave-active {
+    transition: all .5s;
+  }
+  .fade-enter, .fade-leave-active {
+    opacity: 0;
+    height: 0;
+  }
   .card {
     box-sizing: border-box;
+    margin-bottom: 20px;
   }
   .hex--container {
     display: flex;
     flex-flow: column wrap;
     align-content: flex-start;
-    height: 20vh;
+    height: 18vh;
     position: relative;
-    /*border: 1px solid #ccc;*/
     overflow-x: scroll;
     .hex--hex {
-      height: 33%;
       width: 25%;
       flex: 0 0 25%;
       p {
@@ -131,10 +160,12 @@ export default {
     return {
       plaintextArr: [110, 105, 99, 101, 32, 116, 111, 32, 109, 101, 101, 116, 32, 121, 111, 117],
       plaintext: 'nice to meet you',
+      iVector: new Array(16).fill(255),
       cipherkey: new Array(16).fill(255),
       selectedmode: 'ECB (电子密码本)',
       selectedkeylen: '128',
-      encryptedBytes: ''
+      encryptedBytes: '',
+      segment: 1
     }
   },
   components: {
@@ -148,34 +179,47 @@ export default {
       const num = aesjs.utils.hex.toBytes(value)[0]
       if (num < 256) this.$set(this.cipherkey, index, num)
     },
+    iVectorKeyup(index, value, event) {
+      const num = aesjs.utils.hex.toBytes(value)[0]
+      if (num < 256) this.$set(this.iVector, index, num)
+    },
     clickGo() {
       if (this.selectedmode == 'ECB (电子密码本)') {
         const aesEcb = new aesjs.ModeOfOperation.ecb(this.cipherkey)
         this.encryptedBytes = aesEcb.encrypt(this.plaintextArr)
+      }
+      if (this.selectedmode == 'CBC (分组连接)') {
+        const aesCbc = new aesjs.ModeOfOperation.cbc(this.cipherkey, this.iVector)
+        this.encryptedBytes = aesCbc.encrypt(this.plaintextArr)
+      }
+      if (this.selectedmode == 'CFB (密码反馈)') {
+        const aesCfb = new aesjs.ModeOfOperation.cfb(this.cipherkey, this.iVector, this.segment)
+        this.encryptedBytes = aesCfb.encrypt(this.plaintextArr)
+      }
+      if (this.selectedmode == 'OFB (输出反馈)') {
+        const aesOfb = new aesjs.ModeOfOperation.ofb(this.cipherkey, this.iVector)
+        this.encryptedBytes = aesOfb.encrypt(this.plaintextArr)
       }
     }
   },
   computed: {
     encryptedHex() {
       return aesjs.utils.hex.fromBytes(this.encryptedBytes)
+    },
+    divisor() {
+      const len = this.plaintextArr.length
+      const rtn = [1]
+      for (let i = 2; i <= len / 2; i++) {
+        if (len % i == 0) rtn.push(i)
+      }
+      return rtn
     }
   },
   watch: {
     selectedkeylen: function(newLen) {
-      console.log(newLen, this.cipherkey);
       if (newLen == 128) this.cipherkey = new Array(16).fill(255)
       else if (newLen == 192) this.cipherkey = new Array(24).fill(255)
       else if (newLen == 256) this.cipherkey = new Array(32).fill(255)
-      // switch (this.selectedkeylen) {
-      //   case 256:
-      //     this.cipherkey = new Array(32).fill(255)
-      //     break
-      //   case 192:
-      //     this.cipherkey = new Array(24).fill(255)
-      //     break
-      //   default:
-      //     this.cipherkey = new Array(16).fill(255)
-      // }
     }
   },
   mounted() {
