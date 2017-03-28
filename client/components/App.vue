@@ -22,7 +22,6 @@ body {
   overflow-y: scroll;
   margin: 0;
   padding: 0;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Lantinghei SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", "STHeitiSC-Light", "simsun", "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", Arial, sans-serif;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -34,6 +33,5 @@ body {
   text-rendering: optimizeLegibility;
   text-size-adjust: 100%;
   -webkit-touch-callout: none;
-  color: #35495e;
 }
 </style>
