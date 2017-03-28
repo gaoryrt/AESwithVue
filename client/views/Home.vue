@@ -6,13 +6,14 @@
         <header class="card-header">明文</header>
         <div class="card-content inner">
           <form class="form">
-            <fieldset class="form-group">
+            <fieldset :class="plaintextClass">
               <label>字符串明文：</label>
               <input
               class="form-control"
               v-model="plaintext"
               @keyup="textinputKeyup($event.target.value)"
               placeholder="在这里输入需要加密的明文">
+              <div class="help-block" v-show="hint.length">{{hint}}</div>
             </fieldset>
           </form>
           <p>按字节预览明文：</p>
@@ -80,7 +81,7 @@
                 <input
                   class="form-control"
                   type="text"
-                  placeholder="ff"
+                  placeholder="00"
                   @keyup="iVectorKeyup(index, $event.target.value, $event)">
               </div>
             </div>
@@ -89,8 +90,8 @@
         </transition>
       </div>
       <div class="cell -6of12 go">
-        <div class="btn btn-default btn-ghost" @click="clickGo">encrypt ↓</div>
-        <div class="btn btn-default" @click="clickGo">decrypt ↑</div>
+        <div :class="encryptClass" @click="clickEncrypt">encrypt ↓</div>
+        <div class="btn btn-default" @click="clickDecrypt">decrypt ↑</div>
       </div>
     </div>
     <hr>
@@ -136,7 +137,7 @@
       p {
         padding: 0;
         margin: 0;
-        color: #888;
+        color: #aaa;
       }
     }
     .form-control {
@@ -160,7 +161,7 @@ export default {
     return {
       plaintextArr: [110, 105, 99, 101, 32, 116, 111, 32, 109, 101, 101, 116, 32, 121, 111, 117],
       plaintext: 'nice to meet you',
-      iVector: new Array(16).fill(255),
+      iVector: new Array(16).fill(0),
       cipherkey: new Array(16).fill(255),
       selectedmode: 'ECB (电子密码本)',
       selectedkeylen: '128',
@@ -183,7 +184,7 @@ export default {
       const num = aesjs.utils.hex.toBytes(value)[0]
       if (num < 256) this.$set(this.iVector, index, num)
     },
-    clickGo() {
+    clickEncrypt() {
       if (this.selectedmode == 'ECB (电子密码本)') {
         const aesEcb = new aesjs.ModeOfOperation.ecb(this.cipherkey)
         this.encryptedBytes = aesEcb.encrypt(this.plaintextArr)
@@ -200,6 +201,26 @@ export default {
         const aesOfb = new aesjs.ModeOfOperation.ofb(this.cipherkey, this.iVector)
         this.encryptedBytes = aesOfb.encrypt(this.plaintextArr)
       }
+    },
+    clickDecrypt() {
+      console.log(this.encryptedHex)
+      var encryptedBytes = aesjs.utils.hex.toBytes(this.encryptedHex)
+      // if (this.selectedmode == 'ECB (电子密码本)') {
+      //   const aesEcb = new aesjs.ModeOfOperation.ecb(this.cipherkey)
+      //   this.plaintextArr = Array.from(aesEcb.decrypt(encryptedBytes))
+      // }
+      // if (this.selectedmode == 'CBC (分组连接)') {
+      //   const aesCbc = new aesjs.ModeOfOperation.cbc(this.cipherkey, this.iVector)
+      //   this.encryptedBytes = aesCbc.encrypt(this.plaintextArr)
+      // }
+      // if (this.selectedmode == 'CFB (密码反馈)') {
+      //   const aesCfb = new aesjs.ModeOfOperation.cfb(this.cipherkey, this.iVector, this.segment)
+      //   this.encryptedBytes = aesCfb.encrypt(this.plaintextArr)
+      // }
+      // if (this.selectedmode == 'OFB (输出反馈)') {
+      //   const aesOfb = new aesjs.ModeOfOperation.ofb(this.cipherkey, this.iVector)
+      //   this.encryptedBytes = aesOfb.encrypt(this.plaintextArr)
+      // }
     }
   },
   computed: {
@@ -212,7 +233,34 @@ export default {
       for (let i = 2; i <= len / 2; i++) {
         if (len % i == 0) rtn.push(i)
       }
+      if(len != 1) rtn.push(len)
       return rtn
+    },
+    hint() {
+      const len = this.plaintextArr.length
+      if (this.selectedmode == 'ECB (电子密码本)' && len != 16) {
+        return 'ECB 要求明文长度必须为 16 字节'
+      } else if (this.selectedmode == 'CBC (分组连接)' && len % 16 != 0) {
+        return 'CBC 明文长度必须为 16 字节的整数倍'
+      } else if (this.selectedmode == 'CFB (密码反馈)' && len % this.segment != 0) {
+        return 'CFB 明文长度必须为单次加密长度的整数倍'
+      } else {
+        return ''
+      }
+    },
+    plaintextClass() {
+      if (this.hint.length) {
+        return 'form-group form-error'
+      } else {
+        return 'form-group'
+      }
+    },
+    encryptClass() {
+      if (this.hint.length) {
+        return 'btn btn-error btn-ghost'
+      } else {
+        return 'btn btn-default btn-ghost'
+      }
     }
   },
   watch: {
