@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../views/Home'
+import Main from '../views/Main'
+import Process from '../views/Process'
+import SubBytes from '../views/SubBytes'
 
 Vue.use(Router)
 
@@ -8,8 +10,16 @@ export default new Router({
   mode: 'hash',
   routes: [
     {
-      path: '/',
-      component: Home
+      path: '/main',
+      component: Main
+    },
+    {
+      path: '/process',
+      component: Process
+    },
+    {
+      path: '/subbytes',
+      component: SubBytes
     }
   ]
 })

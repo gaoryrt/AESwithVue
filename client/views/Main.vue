@@ -1,6 +1,6 @@
 <template>
-  <div class="hack container">
-    <h1>AES online</h1>
+  <div class="main container">
+    <h1>Encrypt and Decrypt</h1>
     <div class="grid">
       <div class="cell -6of12 card">
         <header class="card-header">明文</header>

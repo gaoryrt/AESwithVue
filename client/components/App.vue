@@ -1,10 +1,32 @@
 <template>
   <div id="app">
+    <div class="btn-group container grid -around">
+      <button
+        class="btn btn-default btn-ghost"
+        @click="$router.push('/main')"
+      >Main</button>
+      <button
+        class="btn btn-default btn-ghost"
+        @click="$router.push('/process')"
+      >Process</button>
+      <button
+        class="btn btn-default btn-ghost"
+        @click="$router.push('/subbytes')"
+      >SubByte</button>
+      <button class="btn btn-default btn-ghost">ShiftRow</button>
+      <button class="btn btn-default btn-ghost">MixColumn</button>
+      <button class="btn btn-default btn-ghost">AddRoundKey</button>
+      <button class="btn btn-default btn-ghost">Preview</button>
+      <button class="btn btn-default btn-ghost">Expansion</button>
+    </div>
     <router-view></router-view>
   </div>
 </template>
 
 <style lang='scss'>
+#app {
+  padding: 20px 0;
+}
 @mixin font-dpr($font-size) {
   font-size: $font-size;
   [data-dpr='2'] & {
