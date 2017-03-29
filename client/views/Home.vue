@@ -203,29 +203,34 @@ export default {
       }
     },
     clickDecrypt() {
-      console.log(this.encryptedHex)
       var encryptedBytes = aesjs.utils.hex.toBytes(this.encryptedHex)
-      // if (this.selectedmode == 'ECB (电子密码本)') {
-      //   const aesEcb = new aesjs.ModeOfOperation.ecb(this.cipherkey)
-      //   this.plaintextArr = Array.from(aesEcb.decrypt(encryptedBytes))
-      // }
-      // if (this.selectedmode == 'CBC (分组连接)') {
-      //   const aesCbc = new aesjs.ModeOfOperation.cbc(this.cipherkey, this.iVector)
-      //   this.encryptedBytes = aesCbc.encrypt(this.plaintextArr)
-      // }
-      // if (this.selectedmode == 'CFB (密码反馈)') {
-      //   const aesCfb = new aesjs.ModeOfOperation.cfb(this.cipherkey, this.iVector, this.segment)
-      //   this.encryptedBytes = aesCfb.encrypt(this.plaintextArr)
-      // }
-      // if (this.selectedmode == 'OFB (输出反馈)') {
-      //   const aesOfb = new aesjs.ModeOfOperation.ofb(this.cipherkey, this.iVector)
-      //   this.encryptedBytes = aesOfb.encrypt(this.plaintextArr)
-      // }
+      if (this.selectedmode == 'ECB (电子密码本)') {
+        const aesEcb = new aesjs.ModeOfOperation.ecb(this.cipherkey)
+        this.plaintextArr = Array.from(aesEcb.decrypt(encryptedBytes))
+      }
+      if (this.selectedmode == 'CBC (分组连接)') {
+        const aesCbc = new aesjs.ModeOfOperation.cbc(this.cipherkey, this.iVector)
+        this.plaintextArr = Array.from(aesCbc.decrypt(encryptedBytes))
+      }
+      if (this.selectedmode == 'CFB (密码反馈)') {
+        const aesCfb = new aesjs.ModeOfOperation.cfb(this.cipherkey, this.iVector, this.segment)
+        this.plaintextArr = Array.from(aesCfb.decrypt(encryptedBytes))
+      }
+      if (this.selectedmode == 'OFB (输出反馈)') {
+        const aesOfb = new aesjs.ModeOfOperation.ofb(this.cipherkey, this.iVector)
+        this.plaintextArr = Array.from(aesOfb.decrypt(encryptedBytes))
+      }
+      this.plaintext = aesjs.utils.utf8.fromBytes(this.plaintextArr)
     }
   },
   computed: {
-    encryptedHex() {
-      return aesjs.utils.hex.fromBytes(this.encryptedBytes)
+    encryptedHex: {
+      get() {
+        return aesjs.utils.hex.fromBytes(this.encryptedBytes)
+      },
+      set(encryptedHex) {
+        this.encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex)
+      }
     },
     divisor() {
       const len = this.plaintextArr.length
