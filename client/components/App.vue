@@ -1,19 +1,32 @@
 <template>
   <div id="app">
-    <div class="btn-group container grid -around">
+    <div class="container btn-group--fixed">
       <button
-        v-for="name in ['Main', 'Process', 'SubByte', 'ShiftRow', 'MixColumn', 'AddRoundKey', 'Preview', 'Expansion']"
-        class="btn btn-default btn-ghost"
+        v-for="name in ['/Main', '/Process', '/SubByte', '/ShiftRow', '/MixColumn', '/AddRoundKey', '/Preview', '/Expansion']"
+        :class="$route.path == name ? 'btn btn-default' : 'btn btn-default btn-ghost'"
         @click="$router.push(name)"
-      >{{name}}</button>
+      >{{name.slice(1)}}</button>
     </div>
     <router-view></router-view>
   </div>
 </template>
 
 <style lang='scss'>
+@media screen and (max-width: 768px) {
+  .btn-group--fixed {
+    position: fixed;
+    top: 0;
+    left: -1rem;
+    overflow-x: scroll;
+    width: calc(100% + 1rem);
+    background: #fff;
+    z-index: 99;
+    display: flex;
+    flex-flow: row nowrap;
+  }
+}
 #app {
-  padding: 20px 0;
+  padding: 25px 0;
 }
 @mixin font-dpr($font-size) {
   font-size: $font-size;

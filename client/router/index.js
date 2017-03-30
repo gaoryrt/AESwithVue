@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Main from '../views/Main'
 import Process from '../views/Process'
 import SubBytes from '../views/SubBytes'
+import ShiftRows from '../views/ShiftRows'
 
 Vue.use(Router)
 
@@ -20,6 +21,10 @@ export default new Router({
     {
       path: '/subbyte',
       component: SubBytes
+    },
+    {
+      path: '/shiftrow',
+      component: ShiftRows
     }
   ]
 })

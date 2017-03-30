@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <h1>SubBytes</h1>
+    <h1>SubBytes | 字节替代</h1>
+    <p>字节替代：把该字节的高4位作为行值，低4位作为列值，以这些行列值作为索引从S盒中对应位置取出元素作为输出。<br>
+    十六进制数{95}所对应的S盒的行值是9，列值是5，S盒中在此位置的值是{2A},相应的{95}被映射为{2A}。</p>
     <div class="grid">
       <div class="cell -6of12 card">
         <header class="card-header">输入</header>
@@ -32,7 +34,7 @@
     <hr>
     <div class="grid">
       <div class="cell card">
-        <header class="card-header">S-box</header>
+        <header class="card-header">S-box S盒</header>
         <div class="card-content inner">
           <div class="sbox--container">
             <div
@@ -143,7 +145,7 @@ export default {
     }
   },
   mounted() {
-
+    console.log(this.$route.path);
   },
   activated() {},
   deactivated() {}
