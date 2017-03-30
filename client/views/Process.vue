@@ -6,9 +6,15 @@
         <h2>initial round</h2>
       </div>
       <div class="right">
-        <div class="btn btn-default">AddRoundKey</div>
+        <div
+          class="btn btn-default"
+          @click="$router.push('AddRoundKey')"
+        >AddRoundKey</div>
         ⊕
-        <div class="btn btn-default btn-ghost">Cipher Key</div>
+        <div
+          class="btn btn-default btn-ghost"
+          @click="$router.push('Expansion')"
+        >Cipher Key</div>
       </div>
     </div>
     <hr>
@@ -17,27 +23,42 @@
         <h2>9 main rounds</h2>
       </div>
       <div class="right">
-        <div class="btn btn-default" @click="$router.push('/subbytes')">SubBytes</div>
+        <div
+          class="btn btn-default"
+          @click="$router.push('/subbyte')"
+        >SubBytes</div>
       </div>
     </div>
     <div class="grid">
       <div class="left"></div>
       <div class="right">
-        <div class="btn btn-default">ShiftRows</div>
+        <div
+          class="btn btn-default"
+          @click="$router.push('ShiftRows')"
+        >ShiftRows</div>
       </div>
     </div>
     <div class="grid">
       <div class="left"></div>
       <div class="right">
-        <div class="btn btn-default">MixColumns</div>
+        <div
+          class="btn btn-default"
+          @click="$router.push('MixColumns')"
+        >MixColumns</div>
       </div>
     </div>
     <div class="grid">
       <div class="left"></div>
       <div class="right">
-        <div class="btn btn-default">AddRoundKey</div>
+        <div
+          class="btn btn-default"
+          @click="$router.push('AddRoundKey')"
+        >AddRoundKey</div>
         ⊕
-        <div class="btn btn-default btn-ghost">Round Key</div>
+        <div
+          class="btn btn-default btn-ghost"
+          @click="$router.push('Expansion')"
+        >Round Key</div>
       </div>
     </div>
     <hr>
@@ -46,21 +67,33 @@
         <h2>final round</h2>
       </div>
       <div class="right">
-        <div class="btn btn-default" @click="$router.push('/subbytes')">SubBytes</div>
+        <div
+          class="btn btn-default"
+          @click="$router.push('/subbyte')"
+        >SubBytes</div>
       </div>
     </div>
     <div class="grid">
       <div class="left"></div>
       <div class="right">
-        <div class="btn btn-default">ShiftRows</div>
+        <div
+          class="btn btn-default"
+          @click="$router.push('ShiftRows')"
+        >ShiftRows</div>
       </div>
     </div>
     <div class="grid">
       <div class="left"></div>
       <div class="right">
-        <div class="btn btn-default">AddRoundKey</div>
+        <div
+          class="btn btn-default"
+          @click="$router.push('AddRoundKey')"
+        >AddRoundKey</div>
         ⊕
-        <div class="btn btn-default btn-ghost">Round Key 10</div>
+        <div
+          class="btn btn-default btn-ghost"
+          @click="$router.push('Expansion')"
+        >Round Key 10</div>
       </div>
     </div>
   </div>

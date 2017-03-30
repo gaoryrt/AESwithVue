@@ -128,7 +128,7 @@
     display: flex;
     flex-flow: column wrap;
     align-content: flex-start;
-    height: 18vh;
+    height: 160px;
     position: relative;
     overflow-x: scroll;
     .hex--hex {

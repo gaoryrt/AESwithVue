@@ -18,7 +18,7 @@ export default new Router({
       component: Process
     },
     {
-      path: '/subbytes',
+      path: '/subbyte',
       component: SubBytes
     }
   ]

@@ -2,22 +2,10 @@
   <div id="app">
     <div class="btn-group container grid -around">
       <button
+        v-for="name in ['Main', 'Process', 'SubByte', 'ShiftRow', 'MixColumn', 'AddRoundKey', 'Preview', 'Expansion']"
         class="btn btn-default btn-ghost"
-        @click="$router.push('/main')"
-      >Main</button>
-      <button
-        class="btn btn-default btn-ghost"
-        @click="$router.push('/process')"
-      >Process</button>
-      <button
-        class="btn btn-default btn-ghost"
-        @click="$router.push('/subbytes')"
-      >SubByte</button>
-      <button class="btn btn-default btn-ghost">ShiftRow</button>
-      <button class="btn btn-default btn-ghost">MixColumn</button>
-      <button class="btn btn-default btn-ghost">AddRoundKey</button>
-      <button class="btn btn-default btn-ghost">Preview</button>
-      <button class="btn btn-default btn-ghost">Expansion</button>
+        @click="$router.push(name)"
+      >{{name}}</button>
     </div>
     <router-view></router-view>
   </div>
