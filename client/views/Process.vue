@@ -1,9 +1,9 @@
 <template>
   <div class="encryption hack container">
     <h1>Encryption Process | 加密流程</h1>
-    <p>在首轮执行 addRoundKey 。<br>
-    接下来9轮执行四种不同的变换：Subbytes、ShiftRows、MixColumns、AddRoundKey。<br>
-    最后一轮执行 Subbytes、ShiftRows、AddRoundKey。</p>
+    <p>1. 在首轮执行 addRoundKey 。<br>
+    2. 接下来9轮执行四种不同的变换：Subbytes、ShiftRows、MixColumns、AddRoundKey。<br>
+    3. 最后一轮执行 Subbytes、ShiftRows、AddRoundKey。</p>
     <div class="grid">
       <div class="left">
         <h2>initial round</h2>
@@ -13,7 +13,7 @@
           class="btn btn-default"
           @click="$router.push('AddRoundKey')"
         >AddRoundKey</div>
-        ⊕
+        ⟴
         <div
           class="btn btn-default btn-ghost"
           @click="$router.push('Expansion')"
@@ -57,7 +57,7 @@
           class="btn btn-default"
           @click="$router.push('AddRoundKey')"
         >AddRoundKey</div>
-        ⊕
+        ⟴
         <div
           class="btn btn-default btn-ghost"
           @click="$router.push('Expansion')"
@@ -92,7 +92,7 @@
           class="btn btn-default"
           @click="$router.push('AddRoundKey')"
         >AddRoundKey</div>
-        ⊕
+        ⟴
         <div
           class="btn btn-default btn-ghost"
           @click="$router.push('Expansion')"

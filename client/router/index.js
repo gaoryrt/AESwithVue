@@ -4,6 +4,7 @@ import Main from '../views/Main'
 import Process from '../views/Process'
 import SubBytes from '../views/SubBytes'
 import ShiftRows from '../views/ShiftRows'
+import MixColumns from '../views/MixColumns'
 
 Vue.use(Router)
 
@@ -25,6 +26,10 @@ export default new Router({
     {
       path: '/shiftrow',
       component: ShiftRows
+    },
+    {
+      path: '/mixcolumn',
+      component: MixColumns
     }
   ]
 })

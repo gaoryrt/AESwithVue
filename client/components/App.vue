@@ -23,10 +23,11 @@
     z-index: 99;
     display: flex;
     flex-flow: row nowrap;
+    box-shadow: 0 0 1px 2px #333;
   }
 }
 #app {
-  padding: 25px 0;
+  padding: 45px 0;
 }
 @mixin font-dpr($font-size) {
   font-size: $font-size;
