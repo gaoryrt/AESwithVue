@@ -14,7 +14,7 @@
                 type="text"
                 :placeholder="input[index].toString(16)"
                 @click="inputclick(index, $event.target.placeholder)"
-                @keyup="inputKeyup(index, $event.target.value, $event)">
+                @keyup="inputKeyup(index, $event.target.value)">
             </div>
           </div>
         </div>
@@ -126,7 +126,7 @@ export default {
       this.index = index
       this.chosen = aesjs.utils.hex.toBytes(placeholder)[0]
     },
-    inputKeyup(index, value, event) {
+    inputKeyup(index, value) {
       const num = aesjs.utils.hex.toBytes(value)[0]
       if (num < 256) this.$set(this.input, index, num)
       this.chosen = num

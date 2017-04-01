@@ -2,10 +2,10 @@
   <div class="container">
     <h1>ShiftRows | 行移位变换</h1>
     <p>对于输入的块：<br>
-    第一行保持不变。<br>
-    第二行<em>循环</em>左移一个字节。□ □ □ ■<br>
-    第三行<em>循环</em>左移两个字节。□ □ ■ ■<br>
-    第四行<em>循环</em>左移三个字节。□ ■ ■ ■</p>
+    □ □ □ □ <- 第一行保持不变。<br>
+    ■ □ □ □ <- 第二行循环左移一个字节。<br>
+    ■ ■ □ □ <- 第三行循环左移两个字节。<br>
+    ■ ■ ■ □ <- 第四行循环左移三个字节。</p>
     <div class="grid">
       <div class="cell -6of12 card">
         <header class="card-header">输入</header>

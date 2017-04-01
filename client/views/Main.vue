@@ -145,6 +145,7 @@
     }
   }
   .hex--hex,
+  .hex--item,
   .go {
     display: flex;
     justify-content: center;
@@ -154,7 +155,7 @@
 
 <script>
 import aesjs from 'aes-js'
-import Multiselect from 'vue-multiselect'
+
 export default {
   props: [],
   data() {
@@ -170,7 +171,7 @@ export default {
     }
   },
   components: {
-    Multiselect
+
   },
   methods: {
     textinputKeyup(value) {

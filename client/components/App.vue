@@ -2,7 +2,7 @@
   <div id="app">
     <div class="container btn-group--fixed">
       <button
-        v-for="name in ['/Main', '/Process', '/SubByte', '/ShiftRow', '/MixColumn', '/AddRoundKey', '/Preview', '/Expansion']"
+        v-for="name in ['/Main', '/Process', '/SubByte', '/ShiftRow', '/MixColumn', '/AddRoundKey', '/Expansion']"
         :class="$route.path == name ? 'btn btn-default' : 'btn btn-default btn-ghost'"
         @click="$router.push(name)"
       >{{name.slice(1)}}</button>
