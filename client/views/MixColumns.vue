@@ -52,7 +52,7 @@
         <div class="card-container inner">
           <div class="hex--container">
             <div class="hex--column" v-for="(column, columnIndex) in input">
-              <div class="hex-item" v-for="(item, itemIndex) in column">
+              <div class="hex--item" v-for="(item, itemIndex) in column">
                 <input
                   class="form-control"
                   type="text"
@@ -85,14 +85,17 @@
 <style lang='scss'>
   .hex--column {
     display: flex;
-    flex-flow: column nowrap;
-    width: 25%;
-    height: 160px;
+    flex-flow: row nowrap;
+    width: 100%;
+    height: 40px;
   }
   .hex--item {
     width: 100%;
     flex: 0 0 25%;
     color: #aaa;
+  }
+  img {
+    max-width: 100%;
   }
 </style>
 
