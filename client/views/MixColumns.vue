@@ -116,13 +116,40 @@ export default {
   },
   methods: {
     itemClick(column, item) {
-      console.log(column, item)
-      switch (item) {
-        case 0: console.log('rtn[0][c] = b[0] ^ a[1] ^ b[1] ^ a[2] ^ a[3]');break
-        case 1: console.log('rtn[1][c] = a[0] ^ b[1] ^ a[2] ^ b[2] ^ a[3]');break
-        case 2: console.log('rtn[2][c] = a[0] ^ a[1] ^ b[2] ^ a[3] ^ b[3]');break
-        default: console.log('rtn[3][c] = a[0] ^ b[0] ^ a[1] ^ a[2] ^ b[3]')
+      let output = `rtn[${column}][${item}] = `
+      const b = x => {
+        let bx = `b[${x}] = 0b${this.input[x][item].toString(2)} << 1 `
+        if (this.input[x][item] & 0x80) {
+          bx += `^ 0b11011 = 0b${(this.input[x][item] << 1 ^ 0x011b).toString(2)}
+`
+        } else {
+          bx += `= 0b${(this.input[x][item] << 1 ^ 0x011b).toString(2)}
+`
+        }
+        return bx
       }
+      const a = x => {
+        return `a[${x}] = 0b${this.input[x][item].toString(2)}
+`
+      }
+      switch (column) {
+        case 0:
+          output += 'b[0] ^ a[1] ^ b[1] ^ a[2] ^ a[3]\n'
+          output +=  b(0) + a(1) + b(1) + a(2) + a(3)
+          break
+        case 1:
+          output += `a[0] ^ b[1] ^ a[2] ^ b[2] ^ a[3]`
+          output +=  a(0) + b(1) + a(2) + b(2) + a(3)
+          break
+        case 2:
+          output += `a[0] ^ a[1] ^ b[2] ^ a[3] ^ b[3]`
+          output +=  a(0) + a(1) + b(2) + a(3) + b(3)
+          break
+        default:
+          output += `a[0] ^ b[0] ^ a[1] ^ a[2] ^ b[3]`
+          output +=  a(0) + b(0) + a(1) + a(2) + b(3)
+      }
+      console.log(output)
     },
     inputKeyup(col, row, value) {
       const num = aesjs.utils.hex.toBytes(value)[0]
