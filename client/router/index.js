@@ -6,6 +6,7 @@ import SubBytes from '../views/SubBytes'
 import ShiftRows from '../views/ShiftRows'
 import MixColumns from '../views/MixColumns'
 import AddRoundKey from '../views/AddRoundKey'
+import Expansion from '../views/Expansion'
 
 Vue.use(Router)
 
@@ -35,6 +36,10 @@ export default new Router({
     {
       path: '/addroundKey',
       component: AddRoundKey
+    },
+    {
+      path: '/expansion',
+      component: Expansion
     }
   ]
 })
