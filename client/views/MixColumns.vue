@@ -45,6 +45,7 @@
         </div>
       </div>
     </div>
+    <p v-html="equation"></p>
     <hr>
     <div class="grid">
       <div class="cell -6of12 card">
@@ -52,7 +53,9 @@
         <div class="card-container inner">
           <div class="hex--container">
             <div class="hex--column" v-for="(column, columnIndex) in input">
-              <div class="hex--item" v-for="(item, itemIndex) in column">
+              <div
+                :class="hexItemClass(columnIndex, itemIndex)"
+                v-for="(item, itemIndex) in column">
                 <input
                   class="form-control"
                   type="text"
@@ -63,13 +66,13 @@
           </div>
         </div>
       </div>
-      <div class="cell -6of12 card">
+      <div class="cell -6of12 card cell--output">
         <header class="card-header">输出</header>
         <div class="card-container inner">
           <div class="hex--container">
             <div class="hex--column" v-for="(column, columnIndex) in input">
               <div
-              class="hex--item"
+              :class="outputClass(columnIndex, itemIndex)"
               v-for="(item, itemIndex) in column"
               @click="itemClick(columnIndex, itemIndex)"
               >{{output[columnIndex][itemIndex].toString(16)}}
@@ -79,7 +82,6 @@
         </div>
       </div>
     </div>
-    <p v-html="equation"></p>
   </div>
 </template>
 
@@ -98,6 +100,25 @@
   img {
     max-width: 100%;
   }
+  .eqation__0,
+  .hex__0 input {
+    border-bottom: 2px solid #f44336;
+  }
+  .eqation__1,
+  .hex__1 input {
+    border-bottom: 2px solid #ff9800;
+  }
+  .eqation__2,
+  .hex__2 input {
+    border-bottom: 2px solid #4caf50;
+  }
+  .eqation__3,
+  .hex__3 input {
+    border-bottom: 2px solid #2196f3;
+  }
+  .cell--output .hex--item {
+    cursor: pointer;
+  }
 </style>
 
 <script>
@@ -106,21 +127,44 @@ export default {
   props: [],
   data() {
     return {
+      chosenColumn: -1,
+      chosenItem: -1,
       input: [[0xd4, 0xe0, 0xb8, 0x1e],
               [0xbf, 0xb4, 0x41, 0x27],
               [0x5d, 0x52, 0x11, 0x98],
               [0x30, 0xae, 0xf1, 0xe5]],
-      equation: ''
+      equation: '选择一个输出值'
     }
   },
   components: {
 
   },
   methods: {
+    hexItemClass(column, item) {
+      let rtn = 'hex--item'
+      if (item == this.chosenItem) {
+        switch (column) {
+          case 0: rtn += ' hex__0'; break
+          case 1: rtn += ' hex__1'; break
+          case 2: rtn += ' hex__2'; break
+          default: rtn += ' hex__3'
+        }
+      }
+      return rtn
+    },
+    outputClass(column, item) {
+      let rtn = 'hex--item'
+      if (item == this.chosenItem && column == this.chosenColumn) {
+        rtn += ' hex--chosen'
+      }
+      return rtn
+    },
     itemClick(column, item) {
+      this.chosenColumn = column
+      this.chosenItem = item
       let output = `rtn[${column}][${item}] = `
       const b = x => {
-        let bx = `b[${x}] = 0b${this.input[x][item].toString(2)} << 1 `
+        let bx = `&nbsp;&nbsp;b[${x}] = <span class="eqation__${x}">0x${this.input[x][item].toString(16)}</span> << 1 `
         if (this.input[x][item] & 0x80) {
           bx += `^ 0b11011 = 0b${(this.input[x][item] << 1 ^ 0x011b).toString(2)}<br>`
         } else {
@@ -129,27 +173,26 @@ export default {
         return bx
       }
       const a = x => {
-        return `a[${x}] = 0b${this.input[x][item].toString(2)}<br>`
+        return `&nbsp;&nbsp;a[${x}] = <span class="eqation__${x}">0x${this.input[x][item].toString(16)}</span> = 0b${this.input[x][item].toString(2)}<br>`
       }
       switch (column) {
         case 0:
-          output += 'b[0] ^ a[1] ^ b[1] ^ a[2] ^ a[3]<br>'
+          output += 'b[0] ^ a[1] ^ b[1] ^ a[2] ^ a[3] & 0xff<br>'
           output +=  b(0) + a(1) + b(1) + a(2) + a(3)
           break
         case 1:
-          output += `a[0] ^ b[1] ^ a[2] ^ b[2] ^ a[3]<br>`
+          output += `a[0] ^ b[1] ^ a[2] ^ b[2] ^ a[3] & 0xff<br>`
           output +=  a(0) + b(1) + a(2) + b(2) + a(3)
           break
         case 2:
-          output += `a[0] ^ a[1] ^ b[2] ^ a[3] ^ b[3]<br>`
+          output += `a[0] ^ a[1] ^ b[2] ^ a[3] ^ b[3] & 0xff<br>`
           output +=  a(0) + a(1) + b(2) + a(3) + b(3)
           break
         default:
-          output += `a[0] ^ b[0] ^ a[1] ^ a[2] ^ b[3]<br>`
+          output += `a[0] ^ b[0] ^ a[1] ^ a[2] ^ b[3] & 0xff<br>`
           output +=  a(0) + b(0) + a(1) + a(2) + b(3)
       }
       this.equation = output
-      // console.log(output)
     },
     inputKeyup(col, row, value) {
       const num = aesjs.utils.hex.toBytes(value)[0]

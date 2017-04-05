@@ -67,6 +67,9 @@
 .shiftRows__hex--chosen > p {
   border: 2px solid #333;
 }
+p {
+  cursor: default;
+}
 </style>
 
 <script>
