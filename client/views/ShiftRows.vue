@@ -92,7 +92,6 @@ export default {
   methods: {
     inputclick(index) {
       this.chosen = index
-      console.log(this.chosen);
     },
     inputKeyup(index, value) {
       const num = aesjs.utils.hex.toBytes(value)[0]

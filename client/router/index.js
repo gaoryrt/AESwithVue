@@ -5,6 +5,7 @@ import Process from '../views/Process'
 import SubBytes from '../views/SubBytes'
 import ShiftRows from '../views/ShiftRows'
 import MixColumns from '../views/MixColumns'
+import AddRoundKey from '../views/AddRoundKey'
 
 Vue.use(Router)
 
@@ -30,6 +31,10 @@ export default new Router({
     {
       path: '/mixcolumn',
       component: MixColumns
+    },
+    {
+      path: '/addroundKey',
+      component: AddRoundKey
     }
   ]
 })
