@@ -79,6 +79,7 @@
         </div>
       </div>
     </div>
+    <p v-html="equation"></p>
   </div>
 </template>
 
@@ -108,7 +109,8 @@ export default {
       input: [[0xd4, 0xe0, 0xb8, 0x1e],
               [0xbf, 0xb4, 0x41, 0x27],
               [0x5d, 0x52, 0x11, 0x98],
-              [0x30, 0xae, 0xf1, 0xe5]]
+              [0x30, 0xae, 0xf1, 0xe5]],
+      equation: ''
     }
   },
   components: {
@@ -120,36 +122,34 @@ export default {
       const b = x => {
         let bx = `b[${x}] = 0b${this.input[x][item].toString(2)} << 1 `
         if (this.input[x][item] & 0x80) {
-          bx += `^ 0b11011 = 0b${(this.input[x][item] << 1 ^ 0x011b).toString(2)}
-`
+          bx += `^ 0b11011 = 0b${(this.input[x][item] << 1 ^ 0x011b).toString(2)}<br>`
         } else {
-          bx += `= 0b${(this.input[x][item] << 1 ^ 0x011b).toString(2)}
-`
+          bx += `= 0b${(this.input[x][item] << 1 ^ 0x011b).toString(2)}<br>`
         }
         return bx
       }
       const a = x => {
-        return `a[${x}] = 0b${this.input[x][item].toString(2)}
-`
+        return `a[${x}] = 0b${this.input[x][item].toString(2)}<br>`
       }
       switch (column) {
         case 0:
-          output += 'b[0] ^ a[1] ^ b[1] ^ a[2] ^ a[3]\n'
+          output += 'b[0] ^ a[1] ^ b[1] ^ a[2] ^ a[3]<br>'
           output +=  b(0) + a(1) + b(1) + a(2) + a(3)
           break
         case 1:
-          output += `a[0] ^ b[1] ^ a[2] ^ b[2] ^ a[3]`
+          output += `a[0] ^ b[1] ^ a[2] ^ b[2] ^ a[3]<br>`
           output +=  a(0) + b(1) + a(2) + b(2) + a(3)
           break
         case 2:
-          output += `a[0] ^ a[1] ^ b[2] ^ a[3] ^ b[3]`
+          output += `a[0] ^ a[1] ^ b[2] ^ a[3] ^ b[3]<br>`
           output +=  a(0) + a(1) + b(2) + a(3) + b(3)
           break
         default:
-          output += `a[0] ^ b[0] ^ a[1] ^ a[2] ^ b[3]`
+          output += `a[0] ^ b[0] ^ a[1] ^ a[2] ^ b[3]<br>`
           output +=  a(0) + b(0) + a(1) + a(2) + b(3)
       }
-      console.log(output)
+      this.equation = output
+      // console.log(output)
     },
     inputKeyup(col, row, value) {
       const num = aesjs.utils.hex.toBytes(value)[0]
