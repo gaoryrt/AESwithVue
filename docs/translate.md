@@ -358,7 +358,7 @@ for i = 0 step 1 to (Nr+1)*Nb-1
 end for
 for round = 1 step 1 to Nr-1
     InvMixColumns(dw[round*Nb, (round+1)*Nb-1]) // note change of type
-end for 
+end for
 ```
 
 
